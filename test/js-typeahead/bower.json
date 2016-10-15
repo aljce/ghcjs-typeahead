@@ -1,0 +1,19 @@
+{
+  "name": "js-typeahead",
+  "authors": [
+    "Kyle McKean <mckean.kylej@gmail.com>"
+  ],
+  "description": "minimal bootstrap typeahead example",
+  "main": "index.html",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "bootstrap3-typeahead": "git://github.com/bassjobsen/Bootstrap-3-Typeahead.git#master"
+  }
+}
