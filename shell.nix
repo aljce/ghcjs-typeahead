@@ -7,6 +7,7 @@ haskell.lib.buildStackProject {
   buildInputs =
     [ zlib
       nodejs
+      haskellPackages.happy
       ncurses
       cabal-install
       git ];

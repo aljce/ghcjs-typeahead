@@ -1,12 +1,7 @@
-{-# LANGUAGE OverloadedStrings #-}
-module Lib
-    ( someFunc
-    ) where
+module Lib where
 
-import Data.JSString ()
-import GHCJS.Types
+import Reflex
+import Reflex.Dom
 
-foreign import javascript unsafe "window.alert($1)" js_alert :: JSString -> IO ()
-
-someFunc :: IO ()
-someFunc = js_alert "Hello from GHCJS!"
+main :: IO ()
+main = mainWidget $ el "h1" $ text "Hello Reflex!"

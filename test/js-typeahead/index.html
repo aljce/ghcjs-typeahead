@@ -14,7 +14,9 @@
     <h1>Typeahead!</h1>
     <input type="text" id="name" data-provide="typeahead">
     <script>
-        $("#name").typeahead({ source:["kyle","andrew","alexa","kate"]});
+     $("#name").typeahead({ source:["kyle","andrew","alexa","kate"],
+                            showHintOnFocus: "all",
+                            fitToElement: true });
     </script>
   </body>
 </html>

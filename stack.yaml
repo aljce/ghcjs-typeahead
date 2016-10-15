@@ -7,3 +7,17 @@ setup-info:
       ghcjs-0.2.0.820160826_ghc-8.0.1:
          url: "http://tolysz.org/ghcjs/ghc-8.0-2016-08-26-nightly-2016-08-26-820160826.tar.gz"
          sha1: "2ecd8523cafe22b3033726363b4acc5356117970"
+packages:
+- location: '.'
+- location:
+    git:  https://github.com/ryantrinkle/reflex.git
+    commit: a63aba90bdea5ae5b3e1506d468613bdfedcdfa3
+  extra-dep: true
+- location:
+    git: https://github.com/ryantrinkle/reflex-dom.git
+    commit: ed3b790f81f8396324fc9a3495de9c911119facc
+  extra-dep: true
+extra-deps:
+- ghcjs-dom-0.2.4.0
+- ref-tf-0.4.0.1
+- zenc-0.1.1
