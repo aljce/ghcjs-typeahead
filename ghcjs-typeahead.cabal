@@ -21,7 +21,6 @@ library
                      , reflex == 0.5.*
                      , reflex-dom == 0.4.*
   default-language:    Haskell2010
-  extensions:          OverloadedStrings
 
 executable ghcjs-typeahead-output
   hs-source-dirs:      app

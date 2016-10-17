@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Rosetta Typeahead</title>
+        <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="style.css"
+    </head>
+    <body class="container">
+        <div class="row">
+            <div id="javascript" class="col-md-6">
+                <script src="bower_components/jquery/dist/jquery.min.js"></script>
+                <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+                <script src="bower_components/bootstrap3-typeahead/bootstrap3-typeahead.js"></script>
+                <h1>Javascript</h1>
+                <input type="text" id="js-input" data-provide="typeahead">
+                <script>
+                 $("#js-input").typeahead({ source:["kyle","andrew","alexa","kate"],
+                                            fitToElement: true });
+                </script>
+            </div>
+            <div id="reflex" class="col-md-6">
+                <script src="dist/rts.js"></script>
+                <script src="dist/lib.js"></script>
+                <script src="dist/out.js"></script>
+                <script src="dist/runmain.js" defer></script>
+            </div>
+
+        </div>    </body>
+</html>
