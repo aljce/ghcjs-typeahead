@@ -3,7 +3,7 @@
   "authors": [
     "Kyle McKean <mckean.kylej@gmail.com>"
   ],
-  "description": "minimal bootstrap typeahead example",
+  "description": "Rosetta Typeahead",
   "main": "index.html",
   "license": "MIT",
   "homepage": "",

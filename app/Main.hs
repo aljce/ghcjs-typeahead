@@ -1,6 +1,11 @@
+{-# LANGUAGE OverloadedStrings #-}
 module Main where
 
-import qualified Lib as L
+import Reflex.Dom
+
+import Typeahead.Input
 
 main :: IO ()
-main = L.main
+main = mainWidgetInElementById "reflex" $ do
+  el "h1" $ text "Reflex"
+  typeaheadInput undefined
