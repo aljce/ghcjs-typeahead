@@ -27,6 +27,7 @@ data TypeaheadConfig t m f o = TypeaheadConfig {
     _elements        :: Dynamic t (f o)
   , _maxDisplay      :: Dynamic t Int
   , _minQueryLength  :: Dynamic t Int
+  , _textInputConfig :: TextInputConfig t
   , _showHintOnFocus :: Bool
   , _scrollHeight    :: Dynamic t Int
   , _matcher         :: T.Text -> o -> Matches o
@@ -40,11 +41,13 @@ concat <$> mapM makeLenses [
   ''Matches,
   ''TypeaheadConfig ]
 
-buildConfig :: (DomBuilder t m, Alternative f, IsSequence o, Index o ~ Int) => (o -> T.Text) -> TypeaheadConfig t m f o
+buildConfig :: (DomBuilder t m, Alternative f, IsSequence o, Index o ~ Int)
+            => (o -> T.Text) -> TypeaheadConfig t m f o
 buildConfig display = TypeaheadConfig {
     _elements        = pure empty
   , _maxDisplay      = pure 8
   , _minQueryLength  = pure 1
+  , _textInputConfig = def
   , _showHintOnFocus = False
   , _scrollHeight    = pure 0
   , _matcher         = defMatcher
