@@ -4,5 +4,5 @@ import Reflex.Dom
 
 import Typeahead.Config
 
-typeaheadInput :: TypeaheadConfig a -> Widget x ()
+typeaheadInput :: TypeaheadConfig t m f o -> Widget x ()
 typeaheadInput _ = return ()
