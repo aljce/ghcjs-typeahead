@@ -10,3 +10,4 @@ main :: IO ()
 main = mainWidgetInElementById "reflex" $ do
   el "h1" $ text "Reflex"
   typeaheadInput (def & elements .~ pure ["kyle","andrew","alexa","kate"])
+  el "p" $ text "This text ensure that the typeahead popup is modal like"
