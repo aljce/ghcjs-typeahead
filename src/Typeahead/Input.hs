@@ -10,25 +10,26 @@ import Data.Bool (bool)
 
 import Typeahead.Config
 
-data Direction k = Up | Down | Pos k
+data Index k = Up | Down | Reload | Pos k
 
-toDirection :: (Reflex t) => Event t Int -> Event t (Direction k)
-toDirection = fmapMaybe (\case
+arrowKeys :: (Reflex t) => Event t Int -> Event t (Index k)
+arrowKeys = fmapMaybe (\case
   40 -> Just Up
   38 -> Just Down
   _  -> Nothing)
 
-moveToDirection :: (MonadFix m, MonadHold t m, Reflex t, Ord k) =>
-                   k -> Dynamic t (M.Map k v) -> Event t (Direction k) -> m (Dynamic t k)
-moveToDirection defKey dynKeys dirs = do
-  startKey <- genStartKey <$> sample (current dynKeys)
-  foldDynM update startKey dirs
+updateIndex :: (MonadFix m, MonadHold t m, Reflex t, Ord k) =>
+                   k -> Behavior t (M.Map k v) -> Event t (Index k) -> m (Dynamic t k)
+updateIndex defKey keysB indexE = do
+  startKey <- genStartKey <$> sample keysB
+  foldDynM update startKey indexE
   where genStartKey = maybe defKey (fst . fst) . M.minViewWithKey
         update (Pos k) _   = return k
         update Up curKey   = fmap (\keys ->
-          maybe (genStartKey keys) fst (M.lookupGT curKey keys)) (sample (current dynKeys))
+          maybe (genStartKey keys) fst (M.lookupGT curKey keys)) (sample keysB)
         update Down curKey = fmap (\keys ->
-          maybe (maybe defKey (fst . fst) (M.maxViewWithKey keys)) fst (M.lookupLT curKey keys)) (sample (current dynKeys))
+          maybe (maybe defKey (fst . fst) (M.maxViewWithKey keys)) fst (M.lookupLT curKey keys)) (sample keysB)
+        update Reload _    = genStartKey <$> sample keysB
 
 search :: forall t m f o. (Reflex t) => TypeaheadConfig t m f o -> Dynamic t T.Text -> Dynamic t (M.Map Int (Matches o))
 search conf inputValue = calculate
@@ -46,7 +47,7 @@ listEl :: (DomBuilderSpace m ~ GhcjsDomSpace, DomBuilder t m, PostBuild t m) =>
 listEl highlight dynMatches active = do
   (li,_) <- elDynAttr' "li" (bool M.empty ("class" =: "active") <$> active) $
     dyn (fmap displayMatch dynMatches)
-  return (domEvent Click li)
+  return (domEvent Mouseover li)
   where displayMatch = elAttr "a" aAttrs . highlight
         aAttrs       = M.fromList [("class","dropdown-item"),("href","#"),("role","option")]
 
@@ -59,7 +60,8 @@ typeaheadInput :: (MonadFix m, DomBuilderSpace m ~ GhcjsDomSpace,
 typeaheadInput conf = do
   input <- textInput (conf ^. textInputConfig)
   let elems = search conf (input ^. textInput_value)
-  rec active <- moveToDirection 0 elems (leftmost [fmap Pos clickedEls, toDirection (input ^. textInput_keydown)])
+  rec active <- updateIndex 0 (current elems)
+        (leftmost [Reload <$ updated elems, Pos <$> clickedEls, arrowKeys (input ^. textInput_keydown)])
       clickedEls <- elDynAttr "ul" (listAttrs elems) $ selectViewListWithKey_ active elems
-                      (\_ -> listEl (conf ^. highlighter))
+                      (const (listEl (conf ^. highlighter)))
   return ()
